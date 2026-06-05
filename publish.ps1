@@ -26,7 +26,7 @@ if ($User -ne "adilf") {
     $files = @("README.md", "banner.py", "CREDITS.md", "PUBLISH_GITHUB.md", "Dockerfile", ".github\ISSUE_TEMPLATE\config.yml", ".github\ISSUE_TEMPLATE\feature_request.yml")
     foreach ($f in $files) {
         if (Test-Path $f) {
-            (Get-Content $f -Raw) -replace "adilf/DDOS-INFINITY-X", "$User/$RepoName" -replace "github.com/adilf", "github.com/$User" | Set-Content $f -NoNewline
+            (Get-Content $f -Raw) -replace "Infinity-X202/DDOS-INFINITY-X", "$User/$RepoName" -replace "github.com/Infinity-X202", "github.com/$User" | Set-Content $f -NoNewline
         }
     }
     git add -A

@@ -2,7 +2,7 @@
 
 Repository URL (update username if yours is different):
 
-**https://github.com/adilf/DDOS-INFINITY-X**
+**https://github.com/Infinity-X202/DDOS-INFINITY-X**
 
 ---
 

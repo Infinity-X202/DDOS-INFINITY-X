@@ -5,13 +5,13 @@ body:
   - type: markdown
     attributes:
       value: |
-        **DDOS INFINITY X** — https://github.com/adilf/DDOS-INFINITY-X
+        **DDOS INFINITY X** — https://github.com/Infinity-X202/DDOS-INFINITY-X
 
   - type: checkboxes
     attributes:
       label: Search existing issues
       options:
-        - label: I searched https://github.com/adilf/DDOS-INFINITY-X/issues
+        - label: I searched https://github.com/Infinity-X202/DDOS-INFINITY-X/issues
           required: true
 
   - type: textarea

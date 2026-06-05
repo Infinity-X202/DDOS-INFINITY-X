@@ -4,7 +4,7 @@
 __brand__ = "DDOS INFINITY X"
 __author__ = "adil fayyaz"
 __version__ = "1.0 INFINITY"
-__repo__ = "https://github.com/adilf/DDOS-INFINITY-X"
+__repo__ = "https://github.com/Infinity-X202/DDOS-INFINITY-X"
 __disclaimer__ = (
     "For educational purposes only. "
     "Use only on systems you own or have explicit written permission to test."

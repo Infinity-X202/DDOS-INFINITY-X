@@ -3,7 +3,7 @@
 ## DDOS INFINITY X
 
 - **Author:** adil fayyaz  
-- **Project:** https://github.com/adilf/DDOS-INFINITY-X  
+- **Project:** https://github.com/Infinity-X202/DDOS-INFINITY-X  
 - **Purpose:** Educational stress-testing framework  
 
 ## Upstream

@@ -1,8 +1,8 @@
-# DDOS INFINITY X — https://github.com/adilf/DDOS-INFINITY-X
+# DDOS INFINITY X — https://github.com/Infinity-X202/DDOS-INFINITY-X
 FROM python:3.12-slim
 
 LABEL maintainer="adil fayyaz"
-LABEL org.opencontainers.image.source="https://github.com/adilf/DDOS-INFINITY-X"
+LABEL org.opencontainers.image.source="https://github.com/Infinity-X202/DDOS-INFINITY-X"
 LABEL org.opencontainers.image.title="DDOS INFINITY X"
 
 WORKDIR /app

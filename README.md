@@ -3,9 +3,9 @@
 <p align="center"><em>Created by <strong>adil fayyaz</strong> · Python 3</em></p>
 
 <p align="center">
-  <a href="https://github.com/adilf/DDOS-INFINITY-X"><img alt="GitHub" src="https://img.shields.io/badge/GitHub-DDOS--INFINITY--X-181717?style=for-the-badge&logo=github"></a>
-  <a href="https://github.com/adilf/DDOS-INFINITY-X/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/github/license/adilf/DDOS-INFINITY-X?color=orange&style=for-the-badge"></a>
-  <a href="https://github.com/adilf/DDOS-INFINITY-X/issues"><img alt="Issues" src="https://img.shields.io/github/issues/adilf/DDOS-INFINITY-X?color=purple&style=for-the-badge"></a>
+  <a href="https://github.com/Infinity-X202/DDOS-INFINITY-X"><img alt="GitHub" src="https://img.shields.io/badge/GitHub-DDOS--INFINITY--X-181717?style=for-the-badge&logo=github"></a>
+  <a href="https://github.com/Infinity-X202/DDOS-INFINITY-X/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/github/license/Infinity-X202/DDOS-INFINITY-X?color=orange&style=for-the-badge"></a>
+  <a href="https://github.com/Infinity-X202/DDOS-INFINITY-X/issues"><img alt="Issues" src="https://img.shields.io/github/issues/Infinity-X202/DDOS-INFINITY-X?color=purple&style=for-the-badge"></a>
 </p>
 
 <p align="center">
@@ -22,7 +22,7 @@
 
 | Author | Version | Repository |
 |--------|---------|------------|
-| **adil fayyaz** | 1.0 INFINITY | https://github.com/adilf/DDOS-INFINITY-X |
+| **adil fayyaz** | 1.0 INFINITY | https://github.com/Infinity-X202/DDOS-INFINITY-X |
 
 ---
 
@@ -51,7 +51,7 @@ CFIP, DNS, TSSRV, PING, CHECK, DSTAT — plus HELP, STOP, CLEAR.
 **Requirements:** Python 3.10+, Git (for PyRoxy dependency)
 
 ```bash
-git clone https://github.com/adilf/DDOS-INFINITY-X.git
+git clone https://github.com/Infinity-X202/DDOS-INFINITY-X.git
 cd DDOS-INFINITY-X
 pip install -r requirements.txt
 python start.py HELP
@@ -81,13 +81,13 @@ python start.py tools
 ## Docker
 
 ```bash
-git clone https://github.com/adilf/DDOS-INFINITY-X.git
+git clone https://github.com/Infinity-X202/DDOS-INFINITY-X.git
 cd DDOS-INFINITY-X
 docker compose build
 docker compose run -it --entrypoint /bin/bash infinityx
 ```
 
-Image (after CI): `ghcr.io/adilf/ddos-infinity-x:latest`
+Image (after CI): `ghcr.io/Infinity-X202/DDOS-INFINITY-X:latest`
 
 ---
 
@@ -121,6 +121,6 @@ MIT — see [LICENSE](LICENSE).
 
 ## Links
 
-- **Repository:** https://github.com/adilf/DDOS-INFINITY-X  
-- **Issues:** https://github.com/adilf/DDOS-INFINITY-X/issues  
+- **Repository:** https://github.com/Infinity-X202/DDOS-INFINITY-X  
+- **Issues:** https://github.com/Infinity-X202/DDOS-INFINITY-X/issues  
 - **Author:** adil fayyaz
