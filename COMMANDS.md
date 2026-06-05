@@ -44,7 +44,9 @@ python3 start.py HELP
 | `python3 start.py HELP` | Show all methods and syntax |
 | `python3 start.py tools` | Open tools console |
 | `python3 start.py STOP` | Stop all attacks |
-| `python3 start.py MENU` | Optional interactive menu |
+| `python3 start.py MENU` | Menu **1 2 3 4** (Invio = opzione 1, attacco GET) |
+| `python3 start.py 1 <url>` | L7 veloce (GET, defaults) |
+| `python3 start.py 2 <ip:port>` | L4 veloce (TCP, defaults) |
 
 ---
 

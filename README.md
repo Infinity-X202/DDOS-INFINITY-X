@@ -53,10 +53,23 @@ python3 start.py HELP
 Full list: **[COMMANDS.md](COMMANDS.md)**
 
 ```bash
+python3 start.py MENU          # menu 1 2 3 4 — Invio = attacco L7 (GET)
+python3 start.py 1 http://TUO-SITO.com   # attacco L7 veloce
+python3 start.py 2 1.1.1.1:80            # attacco L4 veloce (TCP)
 python3 start.py HELP
 python3 start.py tools
 python3 start.py STOP
 ```
+
+**Menu numerico:**
+
+| Tasto | Azione |
+|-------|--------|
+| **1** | Attacco L7 (GET) — chiede solo URL |
+| **2** | Attacco L4 (TCP) — chiede solo ip:port |
+| **3** | Tools |
+| **4** | Lista metodi + HELP |
+| **0** | Esci |
 
 **Layer 7:**
 ```bash

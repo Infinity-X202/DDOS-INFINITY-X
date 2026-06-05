@@ -21,7 +21,25 @@ source venv/bin/activate
 python3 start.py HELP
 ```
 
-## Uso
+## Menu 1 2 3 4
+
+```bash
+python3 start.py MENU
+```
+
+- **1** → attacco GET (solo URL)
+- **2** → attacco TCP (solo ip:port)
+- **3** → tools
+- **4** → lista metodi
+
+Veloce senza menu:
+
+```bash
+python3 start.py 1 http://site.com
+python3 start.py 2 1.1.1.1:80
+```
+
+## Uso classico
 
 ```bash
 python3 start.py GET http://site.com 0 1000 http.txt 10 100

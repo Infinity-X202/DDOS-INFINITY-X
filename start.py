@@ -82,6 +82,8 @@ from banner import (
     show_attack_banner,
     show_main_menu,
     run_interactive_menu,
+    run_quick_l7,
+    run_quick_l4,
     __brand__,
     __author__,
     __version__,
@@ -1727,6 +1729,20 @@ if __name__ == '__main__':
                     Methods.LAYER4_METHODS,
                     ToolsConsole.METHODS,
                     usage_cb=ToolsConsole.usage,
+                )
+                _exit(0)
+            if one == "1":
+                run_quick_l7(
+                    argv[0],
+                    url=argv[2].strip() if len(argv) > 2 else None,
+                    l7=Methods.LAYER7_METHODS,
+                )
+                _exit(0)
+            if one == "2":
+                run_quick_l4(
+                    argv[0],
+                    target=argv[2].strip() if len(argv) > 2 else None,
+                    l4=Methods.LAYER4_METHODS,
                 )
                 _exit(0)
             if one == "TOOLS":

