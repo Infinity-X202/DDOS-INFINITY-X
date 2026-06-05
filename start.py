@@ -84,6 +84,7 @@ from banner import (
     run_interactive_menu,
     run_quick_l7,
     run_quick_l4,
+    run_simulation_attack,
     __brand__,
     __author__,
     __version__,
@@ -1643,7 +1644,7 @@ class ToolsConsole:
                ", ".join(Methods.LAYER4_METHODS), len(Methods.LAYER4_METHODS),
                ", ".join(Methods.LAYER7_METHODS), len(Methods.LAYER7_METHODS),
                ", ".join(ToolsConsole.METHODS), len(ToolsConsole.METHODS),
-               ", ".join(["TOOLS", "HELP", "STOP", "MENU"]), 4,
+               ", ".join(["TOOLS", "HELP", "STOP", "MENU", "SIM"]), 5,
                len(Methods.ALL_METHODS) + 4 + len(ToolsConsole.METHODS),
                argv[0], argv[0], argv[0], argv[0]))
 
@@ -1743,6 +1744,14 @@ if __name__ == '__main__':
                     Methods.LAYER4_METHODS,
                     ToolsConsole.METHODS,
                     usage_cb=ToolsConsole.usage,
+                )
+                _exit(0)
+            if one in {"SIM", "SIMULA", "DEMO", "SIMULATION"}:
+                run_simulation_attack(
+                    target=argv[2].strip() if len(argv) > 2 else "http://127.0.0.1:8080/",
+                    method=argv[3].strip().upper() if len(argv) > 3 else "GET",
+                    threads=int(argv[4]) if len(argv) > 4 else 1000,
+                    duration=int(argv[5]) if len(argv) > 5 else 60,
                 )
                 _exit(0)
             if one in {"1", "LAB"}:

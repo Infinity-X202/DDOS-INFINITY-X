@@ -43,6 +43,13 @@ python3 start.py MENU
 | **3** | Tools |
 | **4** | Lista metodi |
 | **0** | Esci |
+| **5** | **Simulazione** (sembra attacco reale, zero traffico) |
+
+**Solo demo (sicuro):**
+
+```bash
+python3 start.py SIM http://127.0.0.1:8080/
+```
 
 Diretto senza menu:
 

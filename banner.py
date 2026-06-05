@@ -3,10 +3,15 @@
 
 from __future__ import annotations
 
+import random
 import subprocess
 import sys
+import time
+from logging import getLogger
+from math import log2, trunc
 from pathlib import Path
 from typing import Iterable, List, Sequence
+from urllib.parse import urlparse
 
 _SCRIPT_DIR = Path(__file__).resolve().parent
 _START_PY = _SCRIPT_DIR / "start.py"
@@ -28,6 +33,7 @@ _Y, _M, _C, _W, _D, _R, _B = (
 _G, _RED = "\033[92m", "\033[91m"
 _WBOX = 72
 _SEP = f"{_M}{'═' * _WBOX}{_R}"
+_sim_logger = getLogger("DDOS_INFINITY_X")
 
 
 def _out(text: str) -> None:
@@ -148,17 +154,18 @@ def show_main_menu(
     m7 = _default_l7_method(tuple(l7))
     m4 = _default_l4_method(tuple(l4))
     _out(_SEP)
-    _out(f"  {_Y}{_B}  MENU  —  scegli 1 2 3 4{_R}\n")
+    _out(f"  {_Y}{_B}  MENU  —  scegli 1 2 3 4 5{_R}\n")
     opts = [
         ("1", f"Attacco L7 ({m7})", "solo URL → parte subito"),
         ("2", f"Attacco L4 ({m4})", "solo ip:port → parte subito"),
         ("3", "Tools", "PING CHECK DSTAT …"),
         ("4", "Lista metodi + HELP", ""),
+        ("5", "Simulazione attacco", "sembra reale, zero traffico"),
         ("0", "Esci", ""),
     ]
     for num, title, desc in opts:
         _out(f"  {_G}[{num}]{_R} {_W}{title:<28}{_R} {_D}{desc}{_R}")
-    _out(f"\n  {_D}Invio = opzione 1  ·  anche: python3 {script} 1 <url>{_R}")
+    _out(f"\n  {_D}Invio = 1  ·  demo: python3 {script} SIM <url>{_R}")
     _out(f"\n{_SEP}\n")
 
 
@@ -219,6 +226,84 @@ def run_quick_l4(
     _run_script([method, target, "500", "60"], script)
 
 
+def _fmt_bytes(i: int) -> str:
+    if i <= 0:
+        return "-- B"
+    base = 1000
+    multiples = ["B", "kB", "MB", "GB", "TB"]
+    n = trunc(log2(i) / log2(base)) if i > 0 else 0
+    n = min(n, len(multiples) - 1)
+    return f"{i / pow(base, n):.2f} {multiples[n]}"
+
+
+def _fmt_num(num: int) -> str:
+    suffixes = ["", "k", "m", "g", "t"]
+    if num <= 999:
+        return str(num)
+    tier = min(int(log2(num) / log2(1000)), len(suffixes) - 1)
+    return f"{num / 1000.0 ** tier:.2f}{suffixes[tier]}"
+
+
+def run_simulation_attack(
+    *,
+    target: str = "http://127.0.0.1:8080/",
+    method: str = "GET",
+    threads: int = 1000,
+    duration: int = 60,
+    layer: str = "L7",
+) -> None:
+    """Demo mode: realistic console output, no network flood."""
+    if not target.startswith(("http://", "https://")):
+        if layer == "L4" or ":" in target:
+            host, _, port = target.partition(":")
+            display = host or target
+            port_n = int(port or 80)
+        else:
+            target = "http://" + target.lstrip("/")
+            parsed = urlparse(target)
+            display = parsed.hostname or "127.0.0.1"
+            port_n = parsed.port or 80
+    else:
+        parsed = urlparse(target)
+        display = parsed.hostname or "127.0.0.1"
+        port_n = parsed.port or (443 if parsed.scheme == "https" else 80)
+
+    method = method.upper()
+    show_attack_banner(method, display, threads, duration)
+    _out(f"  {_Y}{_B}[ SIMULATION ]{_R} {_D}Nessun pacchetto reale — solo demo educativa{_R}\n")
+
+    w, c, g, r = "\033[93m", "\033[94m", "\033[92m", "\033[0m"
+    time.sleep(0.4)
+    _sim_logger.info(
+        f"{w}Empty Proxy File, running flood without proxy{r}"
+    )
+    time.sleep(0.3)
+    _sim_logger.info(
+        f"{w}[{__brand__}] Attack Started ->{c} {display}{w} | method:{c} {method}"
+        f"{w} | {c}{duration}s{w} | threads:{c} {threads}{w}{r}"
+    )
+
+    ts = time.time()
+    pps_base = random.randint(800, 2200)
+    while time.time() < ts + duration:
+        elapsed = time.time() - ts
+        pct = min(100.0, round(elapsed / duration * 100, 2))
+        ramp = min(1.0, elapsed / max(duration * 0.35, 1))
+        pps = int(pps_base * ramp * random.uniform(0.85, 1.15))
+        bps = int(pps * random.randint(420, 980))
+        _sim_logger.info(
+            f"{w}Target:{c} {display},{w} Port:{c} {port_n},{w} Method:{c} {method}"
+            f"{w} PPS:{c} {_fmt_num(pps)},{w} BPS:{c} {_fmt_bytes(bps)} / {pct}%{r}"
+        )
+        time.sleep(1)
+
+    _sim_logger.info(
+        f"{g}[{__brand__}] Simulation complete — no damage sent.{r}"
+    )
+    _out(f"\n  {_G}Demo finita.{_R} Per test reale sul tuo PC: terminale 1 → "
+         f"`python3 -m http.server 8080`  terminale 2 → `python3 start.py 1 http://127.0.0.1:8080/`\n")
+
+
 def show_attack_banner(method: str, target: str, threads: int, duration: int) -> None:
     _out(f"\n{_M}{_SEP}{_R}")
     _out(f"  {_Y}{_B}[ ENGAGE ]{_R}  {_C}{__brand__}{_R}")
@@ -250,7 +335,7 @@ def run_interactive_menu(
 ) -> None:
     while True:
         show_main_menu(l7=l7, l4=l4, tools=tools, script=script)
-        choice = _prompt("Scelta (1-4, 0 esci)", "1").upper()
+        choice = _prompt("Scelta (1-5, 0 esci)", "1").upper()
 
         if choice in {"0", "6", "Q", "EXIT", "E"}:
             _out(f"  {_Y}Uscita.{_R}\n")
@@ -272,4 +357,9 @@ def run_interactive_menu(
                 usage_cb()
             input(f"\n  {_D}Invio per tornare al menu...{_R}")
             continue
-        _out(f"  {_RED}Non valido. Usa 1, 2, 3, 4 o 0.{_R}")
+        if choice == "5":
+            url = _prompt("URL demo", "http://127.0.0.1:8080/")
+            run_simulation_attack(target=url, method=_default_l7_method(l7))
+            input(f"\n  {_D}Invio per menu...{_R}")
+            continue
+        _out(f"  {_RED}Non valido. Usa 1, 2, 3, 4, 5 o 0.{_R}")

@@ -53,8 +53,9 @@ python3 start.py HELP
 Full list: **[COMMANDS.md](COMMANDS.md)**
 
 ```bash
-python3 start.py MENU          # menu 1 2 3 4 — Invio = attacco L7 (GET)
-python3 start.py 1 http://TUO-SITO.com   # attacco L7 veloce
+python3 start.py SIM http://127.0.0.1:8080/  # demo: sembra reale, zero traffico
+python3 start.py MENU          # menu 1-5 (5 = simulazione)
+python3 start.py 1 http://TUO-SITO.com   # attacco L7 veloce (solo tuo lab)
 python3 start.py 2 1.1.1.1:80            # attacco L4 veloce (TCP)
 python3 start.py HELP
 python3 start.py tools
