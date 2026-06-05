@@ -53,6 +53,33 @@ python3 start.py 2 1.1.1.1:80
 
 ---
 
+## Test su localhost (se `1` non funziona)
+
+**Terminale 1** — avvia un server di prova sulla porta **8080**:
+
+```bash
+cd ~/DDOS-INFINITY-X
+python3 -m http.server 8080
+```
+
+**Terminale 2**:
+
+```bash
+cd ~/DDOS-INFINITY-X
+source venv/bin/activate
+git pull
+touch files/proxies/http.txt
+python3 start.py 1 http://127.0.0.1:8080/
+```
+
+Devi vedere: `Local lab target — running without proxies` e poi `Attack Started`.
+
+Se compare `Proxy Check failed` → `git pull` + `touch files/proxies/http.txt` e riprova.
+
+Se compare `Connection refused` → il server nel terminale 1 non è avviato o porta sbagliata (usa **8080** in entrambi).
+
+---
+
 ## Commands
 
 ```bash
