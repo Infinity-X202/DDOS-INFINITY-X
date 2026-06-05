@@ -14,6 +14,15 @@
 
 ---
 
+## Documentation
+
+| Guide | Description |
+|-------|-------------|
+| **[docs/KALI_LINUX.md](docs/KALI_LINUX.md)** | Full Kali Linux install & troubleshooting (Italian) |
+| **[docs/COMANDI.md](docs/COMANDI.md)** | All commands & examples |
+
+---
+
 ## Install (recommended — avoids errors)
 
 ### Linux / Kali / Debian / Ubuntu
@@ -101,10 +110,13 @@ Replace only `YOUR-TARGET` with a host you **own** or are **authorized** to test
 
 ## Kali — still errors?
 
+See **[docs/KALI_LINUX.md](docs/KALI_LINUX.md)** for the complete guide.
+
 ```bash
 cd DDOS-INFINITY-X
 git pull
 chmod +x install.sh run.sh check.sh
+sed -i 's/\r$//' install.sh run.sh check.sh
 ./install.sh
 ./check.sh
 ./run.sh
