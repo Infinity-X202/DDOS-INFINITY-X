@@ -69,14 +69,13 @@ logger.setLevel("INFO")
 ctx: SSLContext = create_default_context(cafile=where())
 ctx.check_hostname = False
 ctx.verify_mode = CERT_NONE
-# Enforce only TLSv1.2+ (defense-in-depth: also disable older protocols explicitly)
+# TLS 1.2+ only (avoid deprecated OP_NO_TLS* on Python 3.13+)
 if hasattr(ctx, "minimum_version") and hasattr(ssl, "TLSVersion"):
     ctx.minimum_version = ssl.TLSVersion.TLSv1_2
-# Disable insecure TLS versions for additional safety
-if hasattr(ssl, "OP_NO_TLSv1"):
+elif hasattr(ssl, "OP_NO_TLSv1"):
     ctx.options |= ssl.OP_NO_TLSv1
-if hasattr(ssl, "OP_NO_TLSv1_1"):
-    ctx.options |= ssl.OP_NO_TLSv1_1
+    if hasattr(ssl, "OP_NO_TLSv1_1"):
+        ctx.options |= ssl.OP_NO_TLSv1_1
 
 from banner import (
     show_banner,

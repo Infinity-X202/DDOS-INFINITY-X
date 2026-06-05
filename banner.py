@@ -94,7 +94,7 @@ def show_banner(*, clear: bool = False) -> None:
     if clear:
         print("\033c", end="")
     _print_logo()
-    _out(f"  {_D}>> {_R}{__disclaimer}")
+    _out(f"  {_D}>> {_R}{__disclaimer__}")
     _out(f"  {_C}{__repo__}{_R}\n")
 
 
