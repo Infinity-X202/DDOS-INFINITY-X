@@ -30,6 +30,29 @@ python3 start.py HELP
 
 ---
 
+## Menu 1 2 3 4
+
+```bash
+python3 start.py MENU
+```
+
+| Num | Azione |
+|-----|--------|
+| **1** | Attacco L7 **GET** — solo URL (premi Invio = 1) |
+| **2** | Attacco L4 **TCP** — solo ip:port |
+| **3** | Tools |
+| **4** | Lista metodi |
+| **0** | Esci |
+
+Diretto senza menu:
+
+```bash
+python3 start.py 1 http://TUO-SITO.com
+python3 start.py 2 1.1.1.1:80
+```
+
+---
+
 ## Commands
 
 ```bash
