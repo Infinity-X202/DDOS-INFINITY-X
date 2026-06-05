@@ -5,6 +5,16 @@
 
 ---
 
+## Update (fix errors)
+
+If you see `NameError: __disclaimer` — you have an old copy:
+
+```bash
+cd ~/DDOS-INFINITY-X
+git pull
+python3 start.py HELP
+```
+
 ## Install
 
 ```bash

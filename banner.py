@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""DDOS INFINITY X — UI, banner, and interactive menu."""
+"""DDOS INFINITY X — UI, banner, and optional menu."""
 
 from __future__ import annotations
 
 import subprocess
 import sys
-from typing import Iterable, List, Optional, Sequence
+from typing import Iterable, List, Sequence
 
 __brand__ = "DDOS INFINITY X"
 __author__ = "adil fayyaz"
@@ -15,15 +15,14 @@ __disclaimer__ = (
     "For educational purposes only. "
     "Use only on systems you own or have explicit written permission to test."
 )
+# Back-compat (prevents NameError on old copies)
+__disclaimer = __disclaimer__
 
-# ANSI
 _Y, _M, _C, _W, _D, _R, _B = (
     "\033[93m", "\033[95m", "\033[96m", "\033[97m", "\033[90m", "\033[0m", "\033[1m"
 )
-_G = "\033[92m"
-_RED = "\033[91m"
-
-_WBOX = 70
+_G, _RED = "\033[92m", "\033[91m"
+_WBOX = 72
 _SEP = f"{_M}{'═' * _WBOX}{_R}"
 
 
@@ -34,47 +33,65 @@ def _out(text: str) -> None:
         print(text.encode("ascii", "replace").decode("ascii"))
 
 
-def _box_line(text: str, *, color: str = _W, pipe: str = "║") -> str:
-    inner = _WBOX - 2
-    t = text[:inner].center(inner)
-    return f"{_M}{pipe}{color}{t}{_M}{pipe}{_R}"
+def _supports_unicode_box() -> bool:
+    try:
+        "\u2554\u2550\u2557".encode(sys.stdout.encoding or "utf-8")
+        return True
+    except (UnicodeEncodeError, LookupError, AttributeError):
+        return False
 
 
 def _print_logo() -> None:
-    """DDOS INFINITY X logo — Unicode on Kali/Linux, ASCII fallback elsewhere."""
-    art = [
-        f"{_Y}{_B}██████╗ ██████╗  ██████╗ ███████╗    ██╗███╗   ██╗███████╗██╗███╗   ██╗██╗████████╗██╗  ██╗{_R}",
-        f"{_M}██╔══██╗██╔══██╗██╔═══██╗██╔════╝    ██║████╗  ██║██╔════╝██║████╗  ██║██║╚══██╔══╝╚██╗██╔╝{_R}",
-        f"{_M}██║  ██║██║  ██║██║   ██║███████╗    ██║██╔██╗ ██║█████╗  ██║██╔██╗ ██║██║   ██║   ╚███╔╝ {_R}",
-        f"{_C}██║  ██║██║  ██║██║   ██║╚════██║    ██║██║╚██╗██║██╔══╝  ██║██║╚██╗██║██║   ██║   ██╔██╗ {_R}",
-        f"{_C}██████╔╝██████╔╝╚██████╔╝███████║    ██║██║ ╚████║██║     ██║██║ ╚████║██║   ██║   ██╔╝ ██╗{_R}",
-        f"{_C}╚═════╝ ╚═════╝  ╚═════╝ ╚══════╝    ╚═╝╚═╝  ╚═══╝╚═╝     ╚═╝╚═╝  ╚═══╝╚═╝   ╚═╝   ╚═╝  ╚═╝{_R}",
-    ]
-    ascii_art = [
-        f"{_Y}{_B}  ____  ____  ___  ____     ___ _  _  _   _  _ _____ ___  ____  __  __{_R}",
-        f"{_M} |  _ \\|  _ \\/ _ \\/ ___|   |_ _| || || | | || |  __ ) _ \\|  _ \\ \\/ /{_R}",
-        f"{_C} | | | | | | | | | \\___ \\    | || || || |_| || | |_ | (_) | | | \\  /{_R}",
-        f"{_C} |____/|____/ \\___/|____/   |___|_||_||\\___/|_||____/ \\___/|_| |_|\\_\\{_R}",
-    ]
-    try:
-        "\u2554".encode(sys.stdout.encoding or "utf-8")
-        use_unicode = True
-    except (UnicodeEncodeError, LookupError, AttributeError):
-        use_unicode = False
+    """Clean DDOS + INFINITY X banner for Kali / Linux terminals."""
+    u = _supports_unicode_box()
+    if u:
+        top, side, mid, bot = "\u2554", "\u2551", "\u256a", "\u255a"
+        hbar, vbar = "\u2550", "\u2557"
+    else:
+        top, side, mid, bot, hbar, vbar = "+", "|", "+", "+", "=", "+"
 
-    pipe = "\u2551" if use_unicode else "|"
-    top = f"{_M}\u2554{'\u2550' * _WBOX}\u2557{_R}" if use_unicode else f"{_M}+{'=' * _WBOX}+{_R}"
-    mid = f"{_M}\u256a{'\u2550' * _WBOX}\u2569{_R}" if use_unicode else f"{_M}+{'-' * _WBOX}+{_R}"
-    bot = f"{_M}\u255a{'\u2550' * _WBOX}\u255d{_R}" if use_unicode else f"{_M}+{'=' * _WBOX}+{_R}"
+    ddos = [
+        f"{_Y}{_B}██████╗ ██████╗  ██████╗ ███████╗{_R}",
+        f"{_Y}{_B}██╔══██╗██╔══██╗██╔═══██╗██╔════╝{_R}",
+        f"{_M}{_B}██║  ██║██║  ██║██║   ██║███████╗{_R}",
+        f"{_M}{_B}██║  ██║██║  ██║██║▄▄ ██║╚════██║{_R}",
+        f"{_C}{_B}██████╔╝██████╔╝╚██████╔╝███████║{_R}",
+        f"{_C}{_B}╚═════╝ ╚═════╝  ╚══▀▀═╝ ╚══════╝{_R}",
+    ]
+    infx = [
+        f"{_M}{_B}██╗███╗   ██╗███████╗██╗███╗   ██╗██╗████████╗██╗  ██╗   ██╗{_R}",
+        f"{_C}{_B}██║████╗  ██║██╔════╝██║████╗  ██║██║╚══██╔══╝╚██╗██╔╝   ██║{_R}",
+        f"{_C}{_B}██║██╔██╗ ██║█████╗  ██║██╔██╗ ██║██║   ██║   ╚███╔╝    ██║{_R}",
+        f"{_Y}{_B}██║██║╚██╗██║██╔══╝  ██║██║╚██╗██║██║   ██║   ██╔██╗    ██║{_R}",
+        f"{_Y}{_B}██║██║ ╚████║██║     ██║██║ ╚████║██║   ██║   ██╔╝ ██╗   ██║{_R}",
+        f"{_M}{_B}╚═╝╚═╝  ╚═══╝╚═╝     ╚═╝╚═╝  ╚═══╝╚═╝   ╚═╝   ╚═╝  ╚═╝   ╚═╝{_R}",
+    ]
 
     _out("")
-    _out(top)
-    for line in (art if use_unicode else ascii_art):
-        _out(f"{_M}{pipe}{_R} {line}")
-    _out(mid)
-    _out(_box_line(__brand__, color=f"{_C}{_B}", pipe=pipe))
-    _out(_box_line(f"by {__author__}  |  v{__version__}", color=_D, pipe=pipe))
-    _out(f"{bot}\n")
+    _out(f"{_M}{top}{hbar * _WBOX}{vbar}{_R}")
+    for line in ddos:
+        _out(f"{_M}{side}{_R} {line}")
+    _out(f"{_M}{mid}{hbar * _WBOX}{vbar}{_R}")
+    title = f"  ★  {__brand__}  ★  "
+    _out(f"{_M}{side}{_R}{_C}{_B}{title.center(_WBOX + 8)}{_R}")
+    sub = f"  by {__author__}  ·  {__version__}  "
+    _out(f"{_M}{side}{_R}{_D}{sub.center(_WBOX + 4)}{_R}")
+    _out(f"{_M}{mid}{hbar * _WBOX}{vbar}{_R}")
+    for line in infx:
+        _out(f"{_M}{side}{_R} {line}")
+    _out(f"{_M}{bot}{hbar * _WBOX}{vbar}{_R}\n")
+
+
+def _print_quick_commands() -> None:
+    _out(f"  {_G}{_B}Quick commands:{_R}")
+    _out(f"  {_W}python3 start.py HELP{_R}  {_D}|{_R}  {_W}python3 start.py tools{_R}")
+    _out(
+        f"  {_W}python3 start.py GET http://target 0 1000 http.txt 10 60{_R}"
+    )
+    _out(
+        f"  {_W}python3 start.py TCP ip:port 500 60{_R}  "
+        f"{_D}|  Full list: github.com/Infinity-X202/DDOS-INFINITY-X/blob/main/COMMANDS.md{_R}\n"
+    )
 
 
 def _print_methods(columns: Sequence[str], title: str, color: str) -> None:
@@ -90,12 +107,14 @@ def _print_methods(columns: Sequence[str], title: str, color: str) -> None:
         _out("  " + "  ".join(row))
 
 
-def show_banner(*, clear: bool = False) -> None:
+def show_banner(*, clear: bool = False, show_commands: bool = True) -> None:
     if clear:
         print("\033c", end="")
     _print_logo()
     _out(f"  {_D}>> {_R}{__disclaimer__}")
-    _out(f"  {_C}{__repo__}{_R}\n")
+    _out(f"  {_C}{__repo__}{_R}")
+    if show_commands:
+        _print_quick_commands()
 
 
 def show_main_menu(
@@ -105,19 +124,19 @@ def show_main_menu(
     tools: Iterable[str],
     script: str = "start.py",
 ) -> None:
-    show_banner()
+    show_banner(show_commands=False)
     _out(_SEP)
-    _out(f"  {_Y}{_B}  MAIN MENU  —  select an option{_R}\n")
+    _out(f"  {_Y}{_B}  MAIN MENU  —  DDOS INFINITY X{_R}\n")
     opts = [
-        ("1", "Launch Layer 7 attack", "HTTP/HTTPS flood & bypass"),
-        ("2", "Launch Layer 4 attack", "TCP / UDP / game protocols"),
-        ("3", "Open Tools console", "PING · CHECK · DSTAT · DNS …"),
-        ("4", "List all methods", "Show L4 + L7 method names"),
-        ("5", "Command syntax / HELP", "Full usage examples"),
+        ("1", "Layer 7 attack", "GET POST CFB BYPASS …"),
+        ("2", "Layer 4 attack", "TCP UDP SYN …"),
+        ("3", "Tools console", "PING CHECK DSTAT"),
+        ("4", "List all methods", ""),
+        ("5", "Full HELP / syntax", ""),
         ("6", "Exit", ""),
     ]
     for num, title, desc in opts:
-        _out(f"  {_G}[{num}]{_R} {_W}{title:<28}{_R} {_D}{desc}{_R}")
+        _out(f"  {_G}[{num}]{_R} {_W}{title:<22}{_R} {_D}{desc}{_R}")
     _out(f"\n{_SEP}\n")
 
 
@@ -131,17 +150,16 @@ def show_attack_banner(method: str, target: str, threads: int, duration: int) ->
 
 def _prompt(label: str, default: str = "") -> str:
     hint = f" [{default}]" if default else ""
-    val = input(f"  {_C}{label}{_R}{hint}: ").strip()
-    return val or default
+    return input(f"  {_C}{label}{_R}{hint}: ").strip() or default
 
 
 def _run_script(args: List[str], script: str) -> None:
     cmd = [sys.executable, script, *args]
-    print(f"\n  {_D}>> {' '.join(cmd)}{_R}\n")
+    _out(f"\n  {_D}>> {' '.join(cmd)}{_R}\n")
     try:
         subprocess.run(cmd)
     except KeyboardInterrupt:
-        print(f"\n  {_Y}Stopped.{_R}")
+        _out(f"\n  {_Y}Stopped.{_R}")
 
 
 def run_interactive_menu(
@@ -151,69 +169,55 @@ def run_interactive_menu(
     tools: Sequence[str],
     usage_cb=None,
 ) -> None:
-    l7_set = set(m.upper() for m in l7)
-    l4_set = set(m.upper() for m in l4)
+    l7_set = {m.upper() for m in l7}
+    l4_set = {m.upper() for m in l4}
 
     while True:
         show_main_menu(l7=l7, l4=l4, tools=tools, script=script)
-        choice = _prompt("Choice", "1").upper()
+        choice = _prompt("Choice", "5").upper()
 
         if choice in {"6", "Q", "EXIT", "E"}:
-            print(f"  {_Y}Goodbye.{_R}\n")
+            _out(f"  {_Y}Goodbye.{_R}\n")
             return
-
         if choice == "4":
             _print_methods(l7, "LAYER 7", _M)
             _print_methods(l4, "LAYER 4", _C)
-            print(f"\n  {_D}Tools:{_R} {', '.join(sorted(tools))}")
-            input(f"\n  {_D}Press Enter to continue...{_R}")
+            _out(f"\n  {_D}Tools:{_R} {', '.join(sorted(tools))}")
+            input(f"\n  {_D}Press Enter...{_R}")
             continue
-
         if choice == "5":
             if usage_cb:
                 usage_cb()
-            input(f"\n  {_D}Press Enter to continue...{_R}")
+            input(f"\n  {_D}Press Enter...{_R}")
             continue
-
         if choice == "3":
             _run_script(["tools"], script)
             continue
-
         if choice == "1":
-            print(f"\n  {_M}{_B}── Layer 7 setup ──{_R}")
-            print(f"  {_D}Methods: {', '.join(sorted(l7_set)[:12])}...{_R}\n")
-            method = _prompt("Method (e.g. GET, CFB, BYPASS)").upper()
+            method = _prompt("L7 Method", "GET").upper()
             if method not in l7_set:
-                print(f"  {_RED}Unknown L7 method.{_R}")
+                _out(f"  {_RED}Unknown method.{_R}")
                 continue
-            url = _prompt("Target URL", "http://")
-            socks = _prompt("Proxy type (0=all,1=http,4=socks4,5=socks5)", "0")
-            threads = _prompt("Threads", "100")
-            proxy_file = _prompt("Proxy list file", "http.txt")
-            rpc = _prompt("RPC", "10")
-            duration = _prompt("Duration (seconds)", "60")
-            _run_script(
-                [method, url, socks, threads, proxy_file, rpc, duration],
-                script,
-            )
+            _run_script([
+                method,
+                _prompt("URL", "http://"),
+                _prompt("Socks", "0"),
+                _prompt("Threads", "1000"),
+                _prompt("Proxy file", "http.txt"),
+                _prompt("RPC", "10"),
+                _prompt("Seconds", "60"),
+            ], script)
             continue
-
         if choice == "2":
-            print(f"\n  {_C}{_B}── Layer 4 setup ──{_R}")
-            print(f"  {_D}Methods: {', '.join(sorted(l4_set)[:12])}...{_R}\n")
-            method = _prompt("Method (e.g. TCP, UDP, SYN)").upper()
+            method = _prompt("L4 Method", "TCP").upper()
             if method not in l4_set:
-                print(f"  {_RED}Unknown L4 method.{_R}")
+                _out(f"  {_RED}Unknown method.{_R}")
                 continue
-            target = _prompt("Target ip:port", "127.0.0.1:80")
-            threads = _prompt("Threads", "50")
-            duration = _prompt("Duration (seconds)", "30")
-            _run_script([method, target, threads, duration], script)
+            _run_script([
+                method,
+                _prompt("ip:port", "127.0.0.1:80"),
+                _prompt("Threads", "500"),
+                _prompt("Seconds", "60"),
+            ], script)
             continue
-
-        print(f"  {_RED}Invalid choice. Use 1-6.{_R}")
-
-
-if __name__ == "__main__":
-    show_banner()
-    print("Run: python start.py")
+        _out(f"  {_RED}Invalid. Use 1-6.{_R}")

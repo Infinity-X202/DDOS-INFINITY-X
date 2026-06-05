@@ -10,8 +10,10 @@
 <p align="center">For educational purposes only. Do not attack websites without the owner's consent.</p>
 
 <p align="center">
-  <strong>📋 <a href="COMMANDS.md">COMMANDS.md — tutti i comandi</a></strong>
+  <strong><a href="COMMANDS.md">COMMANDS.md — all commands</a></strong>
 </p>
+
+> **Update on Kali:** `git pull` then `python3 start.py HELP` (fixes old `__disclaimer` error)
 
 ---
 
