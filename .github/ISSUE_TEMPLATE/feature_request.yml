@@ -1,0 +1,25 @@
+name: Feature request
+description: Suggest an improvement for DDOS INFINITY X
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **DDOS INFINITY X** — https://github.com/adilf/DDOS-INFINITY-X
+
+  - type: checkboxes
+    attributes:
+      label: Search existing issues
+      options:
+        - label: I searched https://github.com/adilf/DDOS-INFINITY-X/issues
+          required: true
+
+  - type: textarea
+    attributes:
+      label: Describe the feature
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Additional context

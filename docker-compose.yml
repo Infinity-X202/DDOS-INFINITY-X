@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  infinityx:
+    # image: ghcr.io/adilf/ddos-infinity-x:latest
+    build: .
+    container_name: ddos-infinity-x
+    restart: unless-stopped
+    volumes:
+      - ./config.json:/app/config.json
+      - ./files:/app/files

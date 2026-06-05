@@ -1,0 +1,58 @@
+name: Bug Report
+description: Report a problem with DDOS INFINITY X
+title: "[BUG]:"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **DDOS INFINITY X** — by adil fayyaz  
+        For educational / authorized testing only.
+
+  - type: dropdown
+    id: version
+    attributes:
+      label: Version
+      options:
+        - 1.0 INFINITY (default)
+        - other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: parts
+    attributes:
+      label: Section
+      options:
+        - Layer 7
+        - Layer 4
+        - Script / banner
+        - Tools
+        - Docker
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      value: |
+        - OS:
+        - Python:
+        - pip packages version:
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Log output
+      render: shell
