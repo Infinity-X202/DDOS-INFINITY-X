@@ -1604,8 +1604,7 @@ class ToolsConsole:
                 proc.kill()
 
     @staticmethod
-    @staticmethod
-    def usage_text():
+    def usage():
         print((
                   '* %s — Stress Testing Framework | %d Methods\n'
                   '* Created by %s | %s\n'
@@ -1636,25 +1635,15 @@ class ToolsConsole:
                   '   L4 Amplification: python3 %s <method> <ip:port> <threads> <duration> <reflector file (only use with'
                   ' Amplification)>\n') %
               (__brand__,
-               len(Methods.ALL_METHODS) + 3 + len(ToolsConsole.METHODS),
+               len(Methods.ALL_METHODS) + 4 + len(ToolsConsole.METHODS),
                __author__,
                "For educational purposes only — use on systems you own or have written permission to test.",
                ", ".join(Methods.LAYER4_METHODS), len(Methods.LAYER4_METHODS),
                ", ".join(Methods.LAYER7_METHODS), len(Methods.LAYER7_METHODS),
                ", ".join(ToolsConsole.METHODS), len(ToolsConsole.METHODS),
-               ", ".join(["TOOLS", "HELP", "STOP"]), 3,
-               len(Methods.ALL_METHODS) + 3 + len(ToolsConsole.METHODS),
+               ", ".join(["TOOLS", "HELP", "STOP", "MENU"]), 4,
+               len(Methods.ALL_METHODS) + 4 + len(ToolsConsole.METHODS),
                argv[0], argv[0], argv[0], argv[0]))
-
-    @staticmethod
-    def usage():
-        show_main_menu(
-            l7=Methods.LAYER7_METHODS,
-            l4=Methods.LAYER4_METHODS,
-            tools=ToolsConsole.METHODS,
-            script=argv[0],
-        )
-        ToolsConsole.usage_text()
 
     # noinspection PyBroadException
     @staticmethod
@@ -1724,23 +1713,21 @@ def handleProxyList(con, proxy_li, proxy_ty, url=None):
 
 
 if __name__ == '__main__':
-    if len(argv) == 1:
-        run_interactive_menu(
-            argv[0],
-            Methods.LAYER7_METHODS,
-            Methods.LAYER4_METHODS,
-            ToolsConsole.METHODS,
-            usage_cb=ToolsConsole.usage_text,
-        )
-        _exit(0)
-
     show_banner()
     with suppress(KeyboardInterrupt):
         with suppress(IndexError):
             one = argv[1].upper()
 
             if one == "HELP":
-                ToolsConsole.usage()
+                raise IndexError()
+            if one == "MENU":
+                run_interactive_menu(
+                    argv[0],
+                    Methods.LAYER7_METHODS,
+                    Methods.LAYER4_METHODS,
+                    ToolsConsole.METHODS,
+                    usage_cb=ToolsConsole.usage,
+                )
                 _exit(0)
             if one == "TOOLS":
                 ToolsConsole.runConsole()

