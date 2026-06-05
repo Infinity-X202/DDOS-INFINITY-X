@@ -28,16 +28,38 @@ from typing import Any, List, Set, Tuple
 from urllib import parse
 from uuid import UUID, uuid4
 
-from PyRoxy import Proxy, ProxyChecker, ProxyType, ProxyUtiles
-from PyRoxy import Tools as ProxyTools
-from certifi import where
-from cloudscraper import create_scraper
-from dns import resolver
-from icmplib import ping
-from impacket.ImpactPacket import IP, TCP, UDP, Data, ICMP
-from psutil import cpu_percent, net_io_counters, process_iter, virtual_memory
-from requests import Response, Session, exceptions, get, cookies
-from yarl import URL
+_INSTALL_HELP = """
+\x1b[91m[!] Missing dependencies for DDOS INFINITY X\x1b[0m
+
+  \x1b[93mLinux / Kali:\x1b[0m
+    chmod +x install.sh run.sh
+    ./install.sh
+    ./run.sh
+
+  \x1b[93mWindows:\x1b[0m
+    install.bat
+    run.bat
+
+  \x1b[90mDo not use plain 'pip install' on Kali (externally-managed-environment).
+  Always use install.sh / install.bat (creates a venv).\x1b[0m
+"""
+
+try:
+    from PyRoxy import Proxy, ProxyChecker, ProxyType, ProxyUtiles
+    from PyRoxy import Tools as ProxyTools
+    from certifi import where
+    from cloudscraper import create_scraper
+    from dns import resolver
+    from icmplib import ping
+    from impacket.ImpactPacket import IP, TCP, UDP, Data, ICMP
+    from psutil import cpu_percent, net_io_counters, process_iter, virtual_memory
+    from requests import Response, Session, exceptions, get, cookies
+    from yarl import URL
+except ImportError as _import_err:
+    print(_INSTALL_HELP)
+    print(f"\x1b[90mDetail: {_import_err}\x1b[0m")
+    _exit(1)
+
 from base64 import b64encode
 
 basicConfig(format='[%(asctime)s - %(levelname)s] %(message)s',
