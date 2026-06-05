@@ -56,7 +56,15 @@ if hasattr(ssl, "OP_NO_TLSv1"):
 if hasattr(ssl, "OP_NO_TLSv1_1"):
     ctx.options |= ssl.OP_NO_TLSv1_1
 
-from banner import show_banner, show_attack_banner, __brand__, __author__, __version__
+from banner import (
+    show_banner,
+    show_attack_banner,
+    show_main_menu,
+    run_interactive_menu,
+    __brand__,
+    __author__,
+    __version__,
+)
 __dir__: Path = Path(__file__).parent
 __ip__: Any = None
 tor2webs = [
@@ -1575,7 +1583,8 @@ class ToolsConsole:
                 proc.kill()
 
     @staticmethod
-    def usage():
+    @staticmethod
+    def usage_text():
         print((
                   '* %s — Stress Testing Framework | %d Methods\n'
                   '* Created by %s | %s\n'
@@ -1615,6 +1624,16 @@ class ToolsConsole:
                ", ".join(["TOOLS", "HELP", "STOP"]), 3,
                len(Methods.ALL_METHODS) + 3 + len(ToolsConsole.METHODS),
                argv[0], argv[0], argv[0], argv[0]))
+
+    @staticmethod
+    def usage():
+        show_main_menu(
+            l7=Methods.LAYER7_METHODS,
+            l4=Methods.LAYER4_METHODS,
+            tools=ToolsConsole.METHODS,
+            script=argv[0],
+        )
+        ToolsConsole.usage_text()
 
     # noinspection PyBroadException
     @staticmethod
@@ -1684,13 +1703,24 @@ def handleProxyList(con, proxy_li, proxy_ty, url=None):
 
 
 if __name__ == '__main__':
+    if len(argv) == 1:
+        run_interactive_menu(
+            argv[0],
+            Methods.LAYER7_METHODS,
+            Methods.LAYER4_METHODS,
+            ToolsConsole.METHODS,
+            usage_cb=ToolsConsole.usage_text,
+        )
+        _exit(0)
+
     show_banner()
     with suppress(KeyboardInterrupt):
         with suppress(IndexError):
             one = argv[1].upper()
 
             if one == "HELP":
-                raise IndexError()
+                ToolsConsole.usage()
+                _exit(0)
             if one == "TOOLS":
                 ToolsConsole.runConsole()
             if one == "STOP":
