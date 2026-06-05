@@ -9,6 +9,10 @@
 
 <p align="center">For educational purposes only. Do not attack websites without the owner's consent.</p>
 
+<p align="center">
+  <strong>📋 <a href="COMMANDS.md">COMMANDS.md — tutti i comandi</a></strong>
+</p>
+
 ---
 
 ## Clone & Install
@@ -29,7 +33,9 @@ pip3 install -r requirements.txt
 
 ---
 
-## Usage (same style as MHDDoS)
+## Commands (quick reference)
+
+Full list: **[COMMANDS.md](COMMANDS.md)**
 
 ```bash
 python3 start.py HELP
@@ -37,73 +43,30 @@ python3 start.py tools
 python3 start.py STOP
 ```
 
-### Layer 7
-
-```bash
-python3 start.py <method> <url> <socks_type> <threads> <proxylist> <rpc> <duration> <debug=optional>
-```
-
-**Example:**
-
+**Layer 7:**
 ```bash
 python3 start.py GET http://example.com 0 1000 http.txt 10 100
 ```
 
-### Layer 4
-
-```bash
-python3 start.py <method> <ip:port> <threads> <duration>
-```
-
-**Example:**
-
+**Layer 4:**
 ```bash
 python3 start.py TCP 1.1.1.1:80 500 60
 ```
 
-### Layer 4 Proxied
-
+**Syntax:**
 ```bash
+# L7
+python3 start.py <method> <url> <socks_type> <threads> <proxylist> <rpc> <duration>
+
+# L4
+python3 start.py <method> <ip:port> <threads> <duration>
+
+# L4 + proxy
 python3 start.py <method> <ip:port> <threads> <duration> <socks_type> <proxylist>
+
+# L4 amplification
+python3 start.py <method> <ip:port> <threads> <duration> <reflector.txt>
 ```
-
-### Layer 4 Amplification
-
-```bash
-python3 start.py <method> <ip:port> <threads> <duration> <reflector file>
-```
-
----
-
-## Proxy types
-
-| Value | Type |
-|-------|------|
-| 0 | ALL (from config.json) |
-| 1 | HTTP |
-| 4 | SOCKS4 |
-| 5 | SOCKS5 |
-| 6 | RANDOM |
-
----
-
-## Tools
-
-Runs with:
-
-```bash
-python3 start.py tools
-```
-
-CFIP, DNS, TSSRV, PING, CHECK, DSTAT
-
-## Others
-
-| Command | Description |
-|---------|-------------|
-| `HELP` | Show usage |
-| `STOP` | Stop all attacks |
-| `MENU` | Optional interactive menu |
 
 ---
 
