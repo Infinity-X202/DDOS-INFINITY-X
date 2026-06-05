@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# DDOS INFINITY X — https://github.com/adilf/DDOS-INFINITY-X
+# DDOS INFINITY X — https://github.com/Infinity-X202/DDOS-INFINITY-X
 # Created by adil fayyaz | For educational purposes only.
 
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -1738,7 +1738,7 @@ if __name__ == '__main__':
                             or bombardier_path.with_suffix('.exe').exists()
                     ), (
                         "Install bombardier: "
-                        "https://github.com/adilf/DDOS-INFINITY-X#readme"
+                        "https://github.com/Infinity-X202/DDOS-INFINITY-X#readme"
                     )
 
                 if len(argv) == 9:
@@ -1788,7 +1788,7 @@ if __name__ == '__main__':
 
                 if method in Methods.LAYER4_AMP:
                     logger.warning("this method need spoofable servers please check")
-                    logger.warning("https://github.com/adilf/DDOS-INFINITY-X#readme — amplification requires authorized lab use only")
+                    logger.warning("https://github.com/Infinity-X202/DDOS-INFINITY-X#readme — amplification requires authorized lab use only")
 
                 threads = int(argv[3])
                 timer = int(argv[4])
