@@ -10,27 +10,40 @@
 <p align="center">For educational purposes only. Do not attack websites without the owner's consent.</p>
 
 <p align="center">
-  <strong><a href="COMMANDS.md">COMMANDS.md — all commands</a></strong>
+  <a href="docs/KALI_LINUX.md"><strong>Kali Linux install</strong></a> ·
+  <a href="COMMANDS.md"><strong>All commands</strong></a>
 </p>
-
-> **Update on Kali:** `git pull` then `python3 start.py HELP` (fixes old `__disclaimer` error)
 
 ---
 
-## Clone & Install
+## Kali Linux — install & run (copy this)
+
+```bash
+cd ~
+rm -rf DDOS-INFINITY-X
+git clone https://github.com/Infinity-X202/DDOS-INFINITY-X.git
+cd DDOS-INFINITY-X
+python3 -m venv venv
+source venv/bin/activate
+pip3 install -r requirements.txt
+python3 start.py HELP
+```
+
+Every time you open a new terminal:
+
+```bash
+cd ~/DDOS-INFINITY-X
+source venv/bin/activate
+python3 start.py HELP
+```
+
+## Other Linux / Windows
 
 ```bash
 git clone https://github.com/Infinity-X202/DDOS-INFINITY-X.git
 cd DDOS-INFINITY-X
 pip3 install -r requirements.txt
-```
-
-**Kali Linux** (if `externally-managed-environment`):
-
-```bash
-python3 -m venv venv
-source venv/bin/activate
-pip3 install -r requirements.txt
+python3 start.py HELP
 ```
 
 ---

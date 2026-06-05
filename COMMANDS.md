@@ -5,30 +5,34 @@
 
 ---
 
-## Update (fix errors)
-
-If you see `NameError: __disclaimer` — you have an old copy:
+## Kali Linux — install (recommended)
 
 ```bash
-cd ~/DDOS-INFINITY-X
-git pull
+cd ~
+rm -rf DDOS-INFINITY-X
+git clone https://github.com/Infinity-X202/DDOS-INFINITY-X.git
+cd DDOS-INFINITY-X
+python3 -m venv venv
+source venv/bin/activate
+pip3 install -r requirements.txt
 python3 start.py HELP
 ```
 
-## Install
+**New terminal:**
+
+```bash
+cd ~/DDOS-INFINITY-X
+source venv/bin/activate
+python3 start.py HELP
+```
+
+## Other systems
 
 ```bash
 git clone https://github.com/Infinity-X202/DDOS-INFINITY-X.git
 cd DDOS-INFINITY-X
 pip3 install -r requirements.txt
-```
-
-**Kali Linux:**
-
-```bash
-python3 -m venv venv
-source venv/bin/activate
-pip3 install -r requirements.txt
+python3 start.py HELP
 ```
 
 ---

