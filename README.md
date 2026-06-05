@@ -99,16 +99,33 @@ Replace only `YOUR-TARGET` with a host you **own** or are **authorized** to test
 
 ---
 
+## Kali — still errors?
+
+```bash
+cd DDOS-INFINITY-X
+git pull
+chmod +x install.sh run.sh check.sh
+./install.sh
+./check.sh
+./run.sh
+```
+
+If install fails: `sudo apt install -y python3-dev build-essential libffi-dev libssl-dev git`
+
+**Never** use `sudo pip install` on Kali.
+
 ## Common errors
 
 | Error | Fix |
 |-------|-----|
 | `externally-managed-environment` | Use `./install.sh`, not system `pip` |
-| `No module named 'PyRoxy'` | Run `./install.sh`, then `./run.sh` |
-| `syntax error near '<'` | Do not copy `<METHOD>` from docs — use real names like `GET`, `TCP` |
-| `docker: command not found` | Use `install.sh` + `run.sh` instead of Docker |
+| `No module named 'PyRoxy'` | `./install.sh` then `./run.sh` |
+| `bad interpreter` / `$'\r'` | `sed -i 's/\r$//' *.sh` then `chmod +x *.sh` |
+| `syntax error near '<'` | Use `GET`, `TCP` — not `<METHOD>` |
+| `Cannot Create Raw Socket` | Use `sudo ./run.sh` for SYN/ICMP |
+| `docker: command not found` | Use `install.sh` + `run.sh` |
 | `Cannot resolve hostname` | Check URL/IP and network |
-| Proxy file missing | `touch files/proxies/http.txt` (install.sh creates it) |
+| Proxy file missing | `touch files/proxies/http.txt` |
 
 ---
 
